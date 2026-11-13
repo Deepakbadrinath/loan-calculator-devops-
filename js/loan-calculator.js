@@ -56,6 +56,52 @@
     return rows;
   }
 
-  g.LoanCalc = { isValidDate, todayStr, addMonths, daysBetween, calculateEMI, buildSchedule };
+  /**
+   * Prepayment calculation: computes how an extra lump-sum payment impacts
+   * loan tenure and total interest saved, maintaining the existing EMI amount.
+   */
+  function calculatePrepaymentImpact(principalPaise, annualRatePercent, tenureMonths, prepayMonth, prepayAmountPaise) {
+    validateTerms(principalPaise, annualRatePercent, tenureMonths);
+    if (!Number.isInteger(prepayMonth) || prepayMonth < 1 || prepayMonth >= tenureMonths) {
+      throw new Error('Prepayment month must be between 1 and tenure - 1.');
+    }
+    if (!Number.isInteger(prepayAmountPaise) || prepayAmountPaise <= 0) {
+      throw new Error('Prepayment amount must be greater than zero.');
+    }
+    const r = annualRatePercent / 1200;
+    const emi = calculateEMI(principalPaise, annualRatePercent, tenureMonths);
+    let balance = principalPaise, totalInterestWithout = 0;
+
+    for (let i = 1; i <= tenureMonths; i++) {
+      const int = Math.round(balance * r);
+      const prin = i === tenureMonths ? balance : Math.min(emi - int, balance);
+      totalInterestWithout += int;
+      balance -= prin;
+    }
+
+    balance = principalPaise;
+    let newTenure = 0, totalInterestWith = 0;
+    while (balance > 0 && newTenure < tenureMonths) {
+      newTenure++;
+      const int = Math.round(balance * r);
+      totalInterestWith += int;
+      let prin = Math.min(emi - int, balance);
+      balance -= prin;
+      if (newTenure === prepayMonth) {
+        const prepayActual = Math.min(prepayAmountPaise, balance);
+        balance -= prepayActual;
+      }
+    }
+
+    return {
+      originalTenureMonths: tenureMonths,
+      newTenureMonths: newTenure,
+      tenureReducedMonths: tenureMonths - newTenure,
+      interestSavedPaise: Math.max(0, totalInterestWithout - totalInterestWith),
+      emiPaise: emi
+    };
+  }
+
+  g.LoanCalc = { isValidDate, todayStr, addMonths, daysBetween, calculateEMI, buildSchedule, calculatePrepaymentImpact };
   if (typeof module !== 'undefined') module.exports = g.LoanCalc;
 })(typeof window !== 'undefined' ? window : globalThis);

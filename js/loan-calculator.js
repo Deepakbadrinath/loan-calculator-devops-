@@ -56,6 +56,31 @@
     return rows;
   }
 
-  g.LoanCalc = { isValidDate, todayStr, addMonths, daysBetween, calculateEMI, buildSchedule };
+  /**
+   * Foreclosure calculation: computes the settlement amount required to close
+   * a loan prematurely after elapsed months, including foreclosure charge/fee.
+   */
+  function calculateForeclosure(principalPaise, annualRatePercent, tenureMonths, elapsedMonths, foreclosureFeePercent = 2) {
+    validateTerms(principalPaise, annualRatePercent, tenureMonths);
+    if (!Number.isInteger(elapsedMonths) || elapsedMonths < 1 || elapsedMonths > tenureMonths) {
+      throw new Error('Elapsed months must be within loan tenure.');
+    }
+    const r = annualRatePercent / 1200;
+    const emi = calculateEMI(principalPaise, annualRatePercent, tenureMonths);
+    let balance = principalPaise;
+    for (let i = 1; i <= elapsedMonths; i++) {
+      const interest = Math.round(balance * r);
+      const principal = i === tenureMonths ? balance : Math.min(emi - interest, balance);
+      balance -= principal;
+    }
+    const feePaise = Math.round(balance * (foreclosureFeePercent / 100));
+    return {
+      outstandingPrincipalPaise: balance,
+      foreclosureFeePaise: feePaise,
+      totalSettlementPaise: balance + feePaise
+    };
+  }
+
+  g.LoanCalc = { isValidDate, todayStr, addMonths, daysBetween, calculateEMI, buildSchedule, calculateForeclosure };
   if (typeof module !== 'undefined') module.exports = g.LoanCalc;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -22,3 +22,7 @@ Sample data is labelled "Sample:" and loaded on first launch only; Settings → 
 
 ## Ideas to extend in Antigravity
 Sortable table headers, multi-installment payments, prepayment/late-fee rules (see PRD Appendix B), chart widgets in SVG, unit tests for `loan-service.js`.
+
+## Engineering & Source Control
+- **Git Branching Strategy**: See [BRANCHING_STRATEGY.md](BRANCHING_STRATEGY.md) for the 3-developer team workflow (GitHub Flow, naming conventions, Conventional Commits, PR reviews, and merge conflict resolution SOP).
+

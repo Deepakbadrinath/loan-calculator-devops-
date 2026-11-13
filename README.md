@@ -2,8 +2,8 @@
 
 Browser-only learning/demo app. Data lives in LocalStorage (key `loanpro_data_v1`) — not secure, not shared across devices, not for real customer data.
 
-## Run it (Antigravity or any editor)
-1. In Antigravity: **File → Open Folder…** and choose this `loanpro` folder.
+## Run it (vs code or any editor)
+1. In vs code: **File → Open Folder…** and choose this `loanpro` folder.
 2. Open `index.html` in a browser, or serve it: `python -m http.server 8000` → http://localhost:8000
    (VS Code-style "Live Server" extensions also work). No install, no build step.
 3. Open `tests.html` to run the EMI/schedule checks (TC-01…TC-04).
@@ -20,5 +20,5 @@ Browser-only learning/demo app. Data lives in LocalStorage (key `loanpro_data_v1
 Customers → Loans (new application) → open loan → Approve → Record payment → Dashboard/Reports → Print receipt.
 Sample data is labelled "Sample:" and loaded on first launch only; Settings → Reset reloads it.
 
-## Ideas to extend in Antigravity
+## Ideas to extend in vs code
 Sortable table headers, multi-installment payments, prepayment/late-fee rules (see PRD Appendix B), chart widgets in SVG, unit tests for `loan-service.js`.

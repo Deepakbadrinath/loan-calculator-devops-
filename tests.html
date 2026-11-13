@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>LoanPro calculator tests</title>
+<style>body{font:15px system-ui;padding:20px}.p{color:#157347}.f{color:#b3261e}</style></head><body>
+<h1>Calculator tests</h1><ul id="out"></ul>
+<script src="js/loan-calculator.js"></script>
+<script>
+const C = LoanCalc, out = document.getElementById('out');
+function t(name, fn) { let ok = false, msg = ''; try { ok = fn() === true; } catch (e) { msg = e.message; }
+  const li = document.createElement('li'); li.className = ok ? 'p' : 'f'; li.textContent = (ok ? 'PASS ' : 'FAIL ') + name + ' ' + msg; out.append(li); }
+const sum = (a, k) => a.reduce((s, r) => s + r[k], 0);
+t('TC-01 EMI ₹1,00,000 @12% x12 ≈ ₹8,884.88', () => C.calculateEMI(10000000, 12, 12) === 888488);
+t('TC-02 zero interest ₹12,000 x12 = ₹1,000, interest 0', () => { const r = C.buildSchedule(1200000, 0, 12, '2026-12-01'); return r.every(x => x.scheduledAmountPaise === 100000) && sum(r, 'interestPaise') === 0; });
+t('TC-03 principal sums to loan, closing = 0', () => { const r = C.buildSchedule(10000033, 13.75, 37, '2026-12-31'); return sum(r, 'principalPaise') === 10000033 && r[r.length - 1].closingBalancePaise === 0; });
+t('TC-04 invalid terms rejected', () => [[0, 12, 12], [-5, 12, 12], [1000, -1, 12], [1000, 12, 0], [1000, 12, 1.5]].every(a => { try { C.calculateEMI(...a); return false; } catch (e) { return true; } }));
+t('Month-end clamping 31 Jan -> 28 Feb -> 31 Mar', () => C.addMonths('2027-01-31', 1) === '2027-02-28' && C.addMonths('2027-01-31', 2) === '2027-03-31');
+t('Leap year clamp 31 Jan 2028 -> 29 Feb', () => C.addMonths('2028-01-31', 1) === '2028-02-29');
+</script></body></html>

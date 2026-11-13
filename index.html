@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LoanPro – Loan & EMI Management</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar"><button id="menu" class="btn" aria-label="Toggle menu">☰</button><strong>LoanPro</strong></header>
+  <aside id="sidebar">
+    <div class="brand">LoanPro<small>Loan &amp; EMI Manager</small></div>
+    <nav id="nav" aria-label="Main">
+      <a href="#/dashboard" data-page="dashboard">Dashboard</a>
+      <a href="#/customers" data-page="customers">Customers</a>
+      <a href="#/loans" data-page="loans">Loans</a>
+      <a href="#/calculator" data-page="calculator">EMI calculator</a>
+      <a href="#/reports" data-page="reports">Reports</a>
+      <a href="#/settings" data-page="settings">Settings &amp; data</a>
+    </nav>
+    <p id="role" class="role"></p>
+  </aside>
+  <main><div id="banner"></div><div id="view"></div></main>
+  <div id="toasts" role="status" aria-live="polite"></div>
+
+  <script src="js/loan-calculator.js"></script>
+  <script src="js/formatters.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/loan-service.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

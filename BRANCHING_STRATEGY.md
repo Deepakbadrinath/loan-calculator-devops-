@@ -7,8 +7,8 @@ This document defines the official source-control workflow and branching model f
 | Developer | Primary Role | Domain Ownership | Typical Branch Prefixes |
 | :--- | :--- | :--- | :--- |
 | **Developer 1 (Deepak)** | Tech Lead / Core Engineer | Math engine (`loan-calculator.js`), architecture, CI/CD | `feature/calc-*`, `refactor/*`, `hotfix/*` |
-| **Developer 2 (Alice)** | Frontend UI/UX Engineer | Views, DOM handling (`app.js`, `styles.css`, `index.html`) | `feature/ui-*`, `feature/view-*` |
-| **Developer 3 (Bob)** | QA & DevOps Engineer | Business rules (`loan-service.js`), test suite (`tests.html`), storage | `test/*`, `feature/rules-*`, `bugfix/*` |
+| **Developer 2 (Deepika)** | Frontend UI/UX Engineer | Views, DOM handling (`app.js`, `styles.css`, `index.html`) | `feature/ui-*`, `feature/view-*` |
+| **Developer 3 (Raghavendra)** | QA & DevOps Engineer | Business rules (`loan-service.js`), test suite (`tests.html`), storage | `test/*`, `feature/rules-*`, `bugfix/*` |
 
 ---
 
@@ -87,8 +87,8 @@ To maintain high code quality across our 3 developers:
 2. **Automated Verification**: Run tests locally (`tests.html` or node test runner) to ensure 0 failures before pushing.
 3. **Peer Review**: Every PR requires at least **one approving review** from a fellow team member.
    - Deepak reviews math & architecture changes.
-   - Alice reviews UI/UX & CSS styling.
-   - Bob reviews test coverage & edge cases.
+   - Deepika reviews UI/UX & CSS styling.
+   - Raghavendra reviews test coverage & edge cases.
 4. **Merge Strategy**: Standard Merge Commit (`git merge --no-ff`) is preferred for major features to preserve feature history topology. Squash-and-merge may be used for single-commit trivial fixes.
 
 ---

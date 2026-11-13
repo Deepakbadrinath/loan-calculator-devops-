@@ -17,4 +17,8 @@ t('TC-05 Foreclosure calculation includes remaining principal plus fee', () => {
   const f = C.calculateForeclosure(10000000, 12, 12, 6, 2);
   return f.outstandingPrincipalPaise > 0 && f.totalSettlementPaise === f.outstandingPrincipalPaise + f.foreclosureFeePaise;
 });
+t('TC-06 Prepayment reduces tenure and saves interest', () => {
+  const p = C.calculatePrepaymentImpact(10000000, 12, 12, 3, 2000000);
+  return p.newTenureMonths === 10 && p.interestSavedPaise > 0;
+});
 </script></body></html>
